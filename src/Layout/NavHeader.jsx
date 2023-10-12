@@ -1,8 +1,11 @@
+import { useAuth } from "../context/AuthContext"
 import HeaderButton from "../features/header/HeaderButton"
 import HeaderImage from "../features/header/HeaderImage"
 import { Link } from "react-router-dom"
 
 export default function NavHeader() {
+  const {authUser}=useAuth()
+
   return (
     <div className="bg-gray-200 top-0 flex items-center justify-between py-5">
         <div className="flex pl-5">
@@ -12,12 +15,23 @@ export default function NavHeader() {
             </Link> 
         </div>
         <div className="flex gap-3 pr-5 items-center">
-            <Link to="/login">
-            <HeaderButton>Sign in</HeaderButton>
+            
+            {!authUser&&(
+            <>
+            <Link to="/login"><HeaderButton>Sign in</HeaderButton>
             </Link>
             <Link to="/register">
             <HeaderButton>Register</HeaderButton>
             </Link>
+            </>
+            )}
+            {authUser&&(
+              <Link to="/my-account">
+              <HeaderButton>My Account</HeaderButton>
+              </Link>
+
+            )}
+            
             <HeaderButton>Shopping Cart</HeaderButton>
         </div>
     </div>

@@ -7,30 +7,46 @@ import Nendoroid from "../pages/category/Nendoroid";
 import ShoppingCartPage from "../pages/ShoppingCartPage";
 import UnAuthenticated from "../features/auth/UnAuthenticated";
 import RegisterPage from "../pages/RegisterPage";
+import MyAccountPage from "../pages/MyAccountPage";
 
 const router = createBrowserRouter([
-  
   {
     path: "/",
     element: <Layout />,
     children: [
       { path: "/", element: <HomePage /> },
-      { path: "/login", element: 
-      <Authenticated>
-        <LoginPage /> 
-      </Authenticated>
-    },
-    {
-      path:'/nendoroid',element:<Nendoroid/>
-    },{
-      path:'/shoppingcart',element:
-      <UnAuthenticated>
-        <ShoppingCartPage/>
-      </UnAuthenticated>
-    },{
-      path:'/register',element:<RegisterPage/>
-    }
-    
+      {
+        path: "/login",
+        element: (
+          <Authenticated>
+            <LoginPage />
+          </Authenticated>
+        ),
+      },
+      {
+        path: "/nendoroid",
+        element: <Nendoroid />,
+      },
+      {
+        path: "/shoppingcart",
+        element: (
+          <UnAuthenticated>
+            <ShoppingCartPage />
+          </UnAuthenticated>
+        ),
+      },
+      {
+        path: "/register",
+        element: (
+          <Authenticated>
+            <RegisterPage />
+          </Authenticated>
+        ),
+      },
+      {
+        path: "/my-account",
+        element: <MyAccountPage />,
+      },
     ],
   },
 ]);

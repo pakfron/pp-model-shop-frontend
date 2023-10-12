@@ -5,6 +5,7 @@ import InputLoginPage from "./InputLoginPage";
 import Joi from "joi";
 
 import WarningErrorText from "./WarningErrorText";
+import { useEffect } from "react";
 
 export default function LoginForm() {
   const [input, setInput] = useState({
@@ -22,6 +23,7 @@ export default function LoginForm() {
       .trim()
       .required(),
   });
+  useEffect(()=>{ setError({})},[])
 
   const handleOnchange = (event) => {
     setInput({ ...input, [event.target.name]: event.target.value });
@@ -49,6 +51,7 @@ export default function LoginForm() {
       
     }
   };
+
 
   const handleSubmitLogin = (event) => {
     event.preventDefault();

@@ -6,6 +6,8 @@
 }
 
 body{
+  width:100vh;
+  margin:auto;
   background-color:#EBEBEB;
  
 }

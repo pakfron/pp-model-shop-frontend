@@ -6,10 +6,22 @@ import InputLoginPage from "./InputLoginPage";
 import WarningErrorText from "./WarningErrorText";
 import { useAuth } from "../../context/AuthContext";
 import { registerSchema } from "../../validate/validate";
+import { useEffect } from "react";
 
 export default function RegisterForm() {
-  const { register, errorRegister, setErrorRegister, regInput, setRegInput } =
+  const [regInput, setRegInput] = useState({
+    username: "",
+    password: "",
+    confirmPassword: "",
+    email: "",
+  });
+  const { register, errorRegister, setErrorRegister } =
     useAuth();
+
+  useEffect(()=>{
+    setErrorRegister({})
+  },[])
+
   const handleChangeRegInput = (event) => {
     setRegInput({ ...regInput, [event.target.name]: event.target.value });
   };

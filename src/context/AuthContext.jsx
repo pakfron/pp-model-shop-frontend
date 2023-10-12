@@ -23,9 +23,13 @@ export default function AuthContextProvider({ children }) {
     if (getAccessToken()) {
       axios
         .get("auth/me")
-        .then((res) => setAuthUser(res.data.user))
+        .then((res) => {
+          console.log(res.data.user)
+          setAuthUser(res.data.user)})
         .catch((err) => console(err));
     }
+    
+
   }, []);
 
   const register = async (input) => {
