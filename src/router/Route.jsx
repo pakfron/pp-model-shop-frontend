@@ -8,11 +8,15 @@ import ShoppingCartPage from "../pages/ShoppingCartPage";
 import UnAuthenticated from "../features/auth/UnAuthenticated";
 import RegisterPage from "../pages/RegisterPage";
 import MyAccountPage from "../pages/MyAccountPage";
+import Loading from "../components/Loading";
+import ProfilePage from "../pages/myaccount/ProfilePage";
 
 const router = createBrowserRouter([
+  { path: "/loading", element: <Loading /> },
   {
     path: "/",
     element: <Layout />,
+
     children: [
       { path: "/", element: <HomePage /> },
       {
@@ -44,9 +48,17 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/my-account",
+        path: "/my-account/:accountId",
         element: <MyAccountPage />,
       },
+      {
+        path: "/my-account/:accountId/profile",
+        element: <ProfilePage />,
+      },
+      // {
+      //   path:"/my-account/:accountId/profile/email",
+      //   element:
+      // }
     ],
   },
 ]);

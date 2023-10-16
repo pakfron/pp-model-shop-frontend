@@ -1,11 +1,21 @@
 
+import Loading from './components/Loading'
+import { useAuth } from './context/AuthContext'
 import Route from './router/Route'
 
 function App() {
 
+  const{loading}=useAuth()
+  console.log(loading)
+if(!loading){
+  return <Loading/>
+}
+
   return (
     <>
-      <Route/>
+ 
+     <Route/>
+     
     </>
   )
 }

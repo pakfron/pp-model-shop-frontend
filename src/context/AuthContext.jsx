@@ -6,8 +6,11 @@ import { addAccessToken, getAccessToken } from "../utilis/local-storage";
 export const AuthContext = createContext();
 
 export default function AuthContextProvider({ children }) {
-  const [authUser, setAuthUser] = useState(null || getAccessToken());
+  const [authUser, setAuthUser] = useState(null);
   const [accessToken, setAccessToken] = useState();
+  const [haveAccessToken, setHaveAccessToken] = useState(
+    null || getAccessToken()
+  );
   const [regInput, setRegInput] = useState({
     username: "",
     password: "",
@@ -16,6 +19,7 @@ export default function AuthContextProvider({ children }) {
   });
   const [error, setError] = useState();
   const [errorRegister, setErrorRegister] = useState();
+  const [loading, setLoading] = useState(false);
 
   // useEffect(()=>{console.log(authUser)},[authUser])
 
@@ -24,18 +28,28 @@ export default function AuthContextProvider({ children }) {
       axios
         .get("auth/me")
         .then((res) => {
-          console.log(res.data.user)
-          setAuthUser(res.data.user)})
-        .catch((err) => console(err));
+          setLoading(true);
+          console.log(loading);
+          setAuthUser(res.data.user);
+        })
+        .catch((err) => console(err))
+        .finally(() => {
+          setLoading(true);
+        });
+    } else {
+      setLoading(true);
     }
-    
-
   }, []);
 
   const register = async (input) => {
     const res = await axios.post("/auth/register", input);
     setAuthUser(res.data.user);
     addAccessToken(res.data.accessToken);
+    setLoading(true)
+    if (getAccessToken()) {
+      window.location.href = "/";
+    }
+    setLoading(false)
   };
 
   const login = async (input) => {
@@ -43,7 +57,7 @@ export default function AuthContextProvider({ children }) {
     setAuthUser(res.data.user);
     addAccessToken(res.data.accessToken);
 
-    if (accessToken) {
+    if (getAccessToken()) {
       window.location.href = "/";
     }
   };
@@ -62,7 +76,11 @@ export default function AuthContextProvider({ children }) {
         setAccessToken,
         register,
         errorRegister,
-        setErrorRegister
+        setErrorRegister,
+        loading,
+        setLoading,
+        haveAccessToken,
+        setHaveAccessToken,
       }}
     >
       {children}

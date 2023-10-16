@@ -3,9 +3,9 @@ import { useAuth } from "../../context/AuthContext"
 
 
 export default function UnAuthenticated({children}) {
-    const {authUser} =useAuth()
-    console.log(authUser)
-    if(!!authUser===false){
+    const {haveAccessToken} =useAuth()
+    console.log(haveAccessToken)
+    if(!!haveAccessToken===false){
 
         return <Navigate to="/login"/>
     }

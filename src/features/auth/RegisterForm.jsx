@@ -7,6 +7,7 @@ import WarningErrorText from "./WarningErrorText";
 import { useAuth } from "../../context/AuthContext";
 import { registerSchema } from "../../validate/validate";
 import { useEffect } from "react";
+import Loading from "../../components/Loading";
 
 export default function RegisterForm() {
   const [regInput, setRegInput] = useState({
@@ -15,12 +16,12 @@ export default function RegisterForm() {
     confirmPassword: "",
     email: "",
   });
-  const { register, errorRegister, setErrorRegister } =
+  const { register, errorRegister, setErrorRegister, loading } =
     useAuth();
 
-  useEffect(()=>{
-    setErrorRegister({})
-  },[])
+  useEffect(() => {
+    setErrorRegister({});
+  }, []);
 
   const handleChangeRegInput = (event) => {
     setRegInput({ ...regInput, [event.target.name]: event.target.value });
@@ -36,16 +37,16 @@ export default function RegisterForm() {
         return acc;
       }, {});
       const specialChar = `/^[a-zA-Z0-9]{3,20}$/`;
-      const confirmPassword = `[ref:password]`
-      console.log(resultError.username?.includes(specialChar))
-      if(resultError.username?.includes(specialChar)){
-        resultError.username="username can not use special character"
+      const confirmPassword = `[ref:password]`;
+      console.log(resultError.username?.includes(specialChar));
+      if (resultError.username?.includes(specialChar)) {
+        resultError.username = "username can not use special character";
       }
-      if(resultError.password?.includes(specialChar)){
-        resultError.password="password can not use special character"
+      if (resultError.password?.includes(specialChar)) {
+        resultError.password = "password can not use special character";
       }
-      if(resultError.confirmPassword?.includes(confirmPassword)){
-        resultError.confirmPassword="confirmPassword is not same password"
+      if (resultError.confirmPassword?.includes(confirmPassword)) {
+        resultError.confirmPassword = "confirmPassword is not same password";
       }
       return resultError;
     }
@@ -62,6 +63,10 @@ export default function RegisterForm() {
       setErrorRegister(error.response.data);
     });
   };
+
+  if (!loading) {
+    return <Loading />;
+  }
 
   return (
     <>

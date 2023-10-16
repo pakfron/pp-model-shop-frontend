@@ -6,13 +6,14 @@ import Joi from "joi";
 
 import WarningErrorText from "./WarningErrorText";
 import { useEffect } from "react";
+import Loading from "../../components/Loading";
 
 export default function LoginForm() {
   const [input, setInput] = useState({
     username: "",
     password: "",
   });
-  const { setError, error, login } = useAuth();
+  const { setError, error, login,loading,setLoading } = useAuth();
   const loginShcema = Joi.object({
     username: Joi.string()
       .trim()
@@ -60,12 +61,17 @@ export default function LoginForm() {
    return  setError(loginErr);
     }
     setError({})
-    
+    setLoading(true)
     login(input).catch((error) => {
       setError(error.response.data);
-      console.log(error)  
     });
+    setLoading(false)
   };
+
+  if(!loading){
+    return <Loading/>
+  }
+  
 
   return (
     <form
