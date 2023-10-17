@@ -16,7 +16,7 @@ export default function RegisterForm() {
     confirmPassword: "",
     email: "",
   });
-  const { register,setError, errorRegister, setErrorRegister, loading } =
+  const { register, setError, errorRegister, setErrorRegister, loading } =
     useAuth();
 
   useEffect(() => {
@@ -105,6 +105,7 @@ export default function RegisterForm() {
           </div>
           <label htmlFor="password">password</label>
           <InputLoginPage
+            type={"password"}
             value={regInput.password}
             onChange={handleChangeRegInput}
             name={"password"}
@@ -117,6 +118,7 @@ export default function RegisterForm() {
           </div>
           <label htmlFor="confirmPassword">confirmPassword</label>
           <InputLoginPage
+            type={"password"}
             value={regInput.confirmPassword}
             onChange={handleChangeRegInput}
             name={"confirmPassword"}
