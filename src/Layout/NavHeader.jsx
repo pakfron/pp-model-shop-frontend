@@ -59,8 +59,9 @@ export default function NavHeader() {
             <HeaderButton onClick={logoutAccount}>Log Out</HeaderButton>
             </>
           )}
-
+          <Link to={`/shopping-cart/${authUser?.id}`}>
           <HeaderButton>Shopping Cart</HeaderButton>
+          </Link>
         </div>
       </div>
     </div>

@@ -6,7 +6,7 @@ import Route from './router/Route'
 function App() {
 
   const{loading}=useAuth()
-  console.log(loading)
+
 if(!loading){
   return <Loading/>
 }

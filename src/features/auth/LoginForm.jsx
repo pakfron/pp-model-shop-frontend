@@ -13,7 +13,7 @@ export default function LoginForm() {
     username: "",
     password: "",
   });
-  const { setError, error, login,loading,setLoading } = useAuth();
+  const { setError, error,setErrorRegister, login,loading,setLoading } = useAuth();
   const loginShcema = Joi.object({
     username: Joi.string()
       .trim()
@@ -24,7 +24,7 @@ export default function LoginForm() {
       .trim()
       .required(),
   });
-  useEffect(()=>{ setError({})},[])
+  useEffect(()=>{setErrorRegister({})},[])
 
   const handleOnchange = (event) => {
     setInput({ ...input, [event.target.name]: event.target.value });
@@ -64,6 +64,7 @@ export default function LoginForm() {
     setLoading(true)
     login(input).catch((error) => {
       setError(error.response.data);
+      setLoading(true)
     });
     setLoading(false)
   };

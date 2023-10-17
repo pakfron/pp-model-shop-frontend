@@ -16,11 +16,11 @@ export default function RegisterForm() {
     confirmPassword: "",
     email: "",
   });
-  const { register, errorRegister, setErrorRegister, loading } =
+  const { register,setError, errorRegister, setErrorRegister, loading } =
     useAuth();
 
   useEffect(() => {
-    setErrorRegister({});
+    setError({});
   }, []);
 
   const handleChangeRegInput = (event) => {
