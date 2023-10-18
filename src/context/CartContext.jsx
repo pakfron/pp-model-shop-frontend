@@ -1,15 +1,24 @@
+import axios from "axios";
+import { useState } from "react";
+import { useEffect } from "react";
 import { useContext } from "react";
 import { createContext } from "react";
+import { useAuth } from "./AuthContext";
 
-export const CartContext = createContext()
+export const CartContext = createContext();
 
-export default function CartContextProvider({children}) {
+export default function CartContextProvider({ children }) {
+  const { authUser } = useAuth();
+  const [itemCart, setItemCart] = useState();
+  useEffect(() => {}, []);
+
   return (
-    <CartContext.Provider value={{}}>{children}</CartContext.Provider>
-  )
+    <CartContext.Provider value={{ setItemCart, itemCart }}>
+      {children}
+    </CartContext.Provider>
+  );
 }
 
-
-export const useCart = ()=>{
-    return useContext(CartContext)
-}
+export const useCart = () => {
+  return useContext(CartContext);
+};

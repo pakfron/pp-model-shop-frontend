@@ -12,7 +12,7 @@ export default function ProdctContextProvider({ children }) {
     axios
       .get("/product")
       .then((res) => {
-        console.log(res.data.products);
+
 
         setProduct(res.data.products);
       })
