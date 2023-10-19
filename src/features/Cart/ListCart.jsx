@@ -5,14 +5,17 @@ import axios from "../../config/axios";
 import { useState } from "react";
 
 export default function ListCart() {
-  const { itemCart, setItemCart } = useCart();
+  const {itemCart, setItemCart }=  useCart();
   const [productId, setProductId] = useState();
+  const [addCart, setAddCart] = useState();
   const { accountId } = useParams();
   useEffect(() => {
     if (productId) {
+      console.log(productId);
       axios
         .delete(`/cart/delcart/${productId}`)
         .then((res) => {
+          
           setItemCart(res.data.checkCart);
           setProductId();
         })
@@ -22,14 +25,36 @@ export default function ListCart() {
         .get(`/cart/getcart?accountId=${accountId}`)
         .then((res) => {
           setItemCart(res.data.checkCart);
+         
         })
         .catch((error) => {
           console.log(error);
         });
     }
   }, [productId, setProductId]);
-
-
+  
+  useEffect(() => {
+    if (productId) {
+  
+      axios
+        .delete(`/cart/delcart/${productId}`)
+        .then((res) => {
+         
+          setItemCart(res.data.checkCart)
+        })
+        .catch((error) => console.log(error)).finally(setProductId());
+    } else {
+      axios
+        .get(`/cart/getcart?accountId=${accountId}`)
+        .then((res) => {
+          setItemCart(res.data.checkCart);
+          
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [productId, setProductId]);
   return itemCart?.map((el) => (
     <div
       key={el.id}
@@ -44,11 +69,12 @@ export default function ListCart() {
             <div className="h-[50%] flex items-center">{el?.product.name}</div>
             <div className="h-[50%] flex items-center">
               <button
-                onClick={(event) => {
+                 onClick={(event) => {
                   event.preventDefault();
                   setProductId(el.product.id);
                 }}
                 className="hover:text-red-600 border-b-2 "
+                
               >
                 Remove
               </button>
