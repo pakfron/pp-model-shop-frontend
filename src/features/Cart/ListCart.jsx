@@ -8,14 +8,11 @@ export default function ListCart() {
   const { itemCart, setItemCart } = useCart();
   const [productId, setProductId] = useState();
   const { accountId } = useParams();
-
   useEffect(() => {
-    if (productId !== undefined) {
-      console.log(productId);
+    if (productId) {
       axios
         .delete(`/cart/delcart/${productId}`)
         .then((res) => {
-          console.log(res.data.checkCart);
           setItemCart(res.data.checkCart);
           setProductId();
         })
@@ -25,13 +22,14 @@ export default function ListCart() {
         .get(`/cart/getcart?accountId=${accountId}`)
         .then((res) => {
           setItemCart(res.data.checkCart);
-          console.log(res.data.checkCart);
         })
         .catch((error) => {
           console.log(error);
         });
     }
   }, [productId, setProductId]);
+
+
   return itemCart?.map((el) => (
     <div
       key={el.id}
@@ -48,7 +46,6 @@ export default function ListCart() {
               <button
                 onClick={(event) => {
                   event.preventDefault();
-                  console.log(el.product.id);
                   setProductId(el.product.id);
                 }}
                 className="hover:text-red-600 border-b-2 "

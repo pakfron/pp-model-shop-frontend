@@ -15,6 +15,7 @@ import ProfilePage from "../pages/myaccount/ProfilePage";
 import ProductDetailPage from "../pages/ProductDetailPage";
 import ShoppingCart from "../pages/ShoppingCart";
 import AddressPage from "../pages/myaccount/AddressPage";
+import CheckoutAddress from "../pages/CheckoutAddress";
 
 const router = createBrowserRouter([
   { path: "/loading", element: <Loading /> },
@@ -63,6 +64,8 @@ const router = createBrowserRouter([
 
           <ShoppingCart/>
         </UnAuthenticated>
+      },{
+        path:'/shopping-cart/:accountId/checkout-address',element:<CheckoutAddress/>
       }
       // {
       //   path:"/my-account/:accountId/profile/email",

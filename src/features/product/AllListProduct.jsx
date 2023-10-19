@@ -5,7 +5,6 @@ import axios from "../../config/axios";
 import { useState } from "react";
 import { useEffect } from "react";
 export default function AllListProduct() {
-  const { setLoading, authUser } = useAuth();
   const { products } = useProduct();
   const [addCart, setAddCart] = useState();
   useEffect(() => {
