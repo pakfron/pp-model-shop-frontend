@@ -8,8 +8,9 @@ import { useAuth } from "./AuthContext";
 export const CartContext = createContext();
 
 export default function CartContextProvider({ children }) {
-  const { authUser } = useAuth();
+  
   const [itemCart, setItemCart] = useState();
+  const [] = useState();
   useEffect(() => {}, []);
 
   return (

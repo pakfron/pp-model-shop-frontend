@@ -2,9 +2,18 @@ import MyAccountBody from "../features/My Account/MyAccountBody";
 import BodyPage from "../features/body/BodyPage";
 import ListCart from "../features/Cart/ListCart";
 import { Link } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 
 export default function ShoppingCart() {
-  // console.log(authUser)
+  const {itemCart}= useCart();
+  console.log(itemCart)
+  if(itemCart !== undefined){
+    const sum = itemCart.reduce((acc,item)=>{
+      acc+= +item.totalPrice 
+      return acc
+    },0)
+    
+  }
   return (
     <BodyPage>
       <MyAccountBody title={"Your Cart"}>
@@ -18,6 +27,9 @@ export default function ShoppingCart() {
             </div>
           </div>
           <ListCart />
+
+          <div>all Total</div>
+          <div>999999</div>
           <div className="w-full flex gap-10 justify-end pb-28">
             <div>
               <Link to="/">
