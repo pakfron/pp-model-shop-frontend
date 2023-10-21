@@ -3,8 +3,11 @@ import { useCart } from "../../context/CartContext";
 import { useEffect } from "react";
 import axios from "../../config/axios";
 import { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
+import Loading from "../../components/Loading";
 
 export default function ListCart() {
+
   const {itemCart, setItemCart }=  useCart();
   const [productId, setProductId] = useState();
   const [addCart, setAddCart] = useState();
@@ -21,15 +24,18 @@ export default function ListCart() {
         })
         .catch((error) => console.log(error));
     } else {
+    
       axios
         .get(`/cart/getcart?accountId=${accountId}`)
         .then((res) => {
           setItemCart(res.data.checkCart);
-         
+          
         })
         .catch((error) => {
+         
           console.log(error);
-        });
+        }).finally();
+        
     }
   }, [productId, setProductId]);
   
@@ -55,6 +61,8 @@ export default function ListCart() {
         });
     }
   }, [productId, setProductId]);
+
+
   return itemCart?.map((el) => (
     <div
       key={el.id}

@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import { useContext } from "react";
 import { createContext } from "react";
-import axios from "../config/axios";
+
 
 export const CartContext = createContext();
 
 export default function CartContextProvider({ children }) {
   const [itemCart, setItemCart] = useState();
   const [netPrice, setNetPrice] = useState();
-
+  const [orderId,setOrderId] = useState();
   
 
 
@@ -20,7 +20,9 @@ export default function CartContextProvider({ children }) {
         netPrice,
         setNetPrice,
         setItemCart,
-        itemCart
+        itemCart,
+        orderId,
+        setOrderId
       }}
     >
       {children}

@@ -17,6 +17,7 @@ import ShoppingCart from "../pages/ShoppingCart";
 import AddressPage from "../pages/myaccount/AddressPage";
 import CheckoutAddress from "../pages/CheckoutAddress";
 import PaymentPage from "../pages/PaymentPage";
+import OrderHistoryPage from "../pages/OrderHistoryPage";
 
 const router = createBrowserRouter([
   { path: "/loading", element: <Loading /> },
@@ -56,22 +57,30 @@ const router = createBrowserRouter([
         path: "/my-account/:accountId/profile",
         element: <ProfilePage />,
       },
-      {path:'/my-account/:accountId/address',element:<AddressPage/>}
-      ,{
-        path:"/product/:type/:productId",element:<ProductDetailPage/>
-      },{
-        path:"/shopping-cart/:accountId",element:
-        <UnAuthenticated>
-
-          <ShoppingCart/>
-        </UnAuthenticated>
-      },{
-        path:'/shopping-cart/:accountId/checkout-address',element:<CheckoutAddress/>
+      { path: "/my-account/:accountId/address", element: <AddressPage /> },
+      {
+        path: "/product/:type/:productId",
+        element: <ProductDetailPage />,
       },
       {
-        path:'/payment/:accountId',element:<PaymentPage/>
+        path: "/shopping-cart/:accountId",
+        element: (
+          <UnAuthenticated>
+            <ShoppingCart />
+          </UnAuthenticated>
+        ),
+      },
+      {
+        path: "/shopping-cart/:accountId/checkout-address",
+        element: <CheckoutAddress />,
+      },
+      {
+        path: "/payment/:accountId/:orderId",
+        element: <PaymentPage />,
+      },
+      {
+        path:'/orderhistory/:accountId',element:<OrderHistoryPage/>
       }
-
     ],
   },
 ]);

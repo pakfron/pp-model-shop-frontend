@@ -32,7 +32,9 @@ export default function BodyAccountNav() {
         <div className="bg-pp-bg-gray  rounded-2xl w-[430px] h-[200px]">
           <AccountNavHeadLine headerText={"ORDER HISTORY"} />
           <ul className="pl-9 pt-5 flex flex-col gap-3">
+            <Link to={`/orderhistory/${accountId}`}>
             <Li_ListAccountNav listText={"Order History"} />
+            </Link>
           </ul>
         </div>
       </div>
