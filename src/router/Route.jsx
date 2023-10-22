@@ -6,7 +6,7 @@ import Authenticated from "../features/auth/Authenticated";
 import Figure from "../pages/category/Figure";
 import Figma from "../pages/category/Figma";
 import Nendoroid from "../pages/category/Nendoroid";
-import ShoppingCartPage from "../pages/ShoppingCartPage";
+
 import UnAuthenticated from "../features/auth/UnAuthenticated";
 import RegisterPage from "../pages/RegisterPage";
 import MyAccountPage from "../pages/MyAccountPage";
@@ -18,6 +18,10 @@ import AddressPage from "../pages/myaccount/AddressPage";
 import CheckoutAddress from "../pages/CheckoutAddress";
 import PaymentPage from "../pages/PaymentPage";
 import OrderHistoryPage from "../pages/OrderHistoryPage";
+import AdminPage from "../pages/admin/AdminPage";
+import OrderHistoryAdminPage from "../pages/admin/OrderHistoryAdminPage";
+import ProductAdminPage from "../pages/admin/ProductAdminPage";
+
 
 const router = createBrowserRouter([
   { path: "/loading", element: <Loading /> },
@@ -81,8 +85,16 @@ const router = createBrowserRouter([
       {
         path:'/orderhistory/:accountId',element:<OrderHistoryPage/>
       }
+      ,{
+        path:'/admin',element:<AdminPage/>
+      },
+      {
+        path:'/admin/orderhistory',element:<OrderHistoryAdminPage/>
+      },
+      {path:'/admin/product',element:<ProductAdminPage/>}
     ],
   },
+  
 ]);
 
 export default function Route() {

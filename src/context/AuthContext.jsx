@@ -6,6 +6,7 @@ import { addAccessToken, getAccessToken } from "../utilis/local-storage";
 export const AuthContext = createContext();
 
 export default function AuthContextProvider({ children }) {
+  
   const [authUser, setAuthUser] = useState(null);
   const [accessToken, setAccessToken] = useState();
   const [haveAccessToken, setHaveAccessToken] = useState(
@@ -20,8 +21,46 @@ export default function AuthContextProvider({ children }) {
   const [error, setError] = useState();
   const [errorRegister, setErrorRegister] = useState();
   const [loading, setLoading] = useState(false);
+  const [address, setAddress] = useState();
+  const [editAddress,setEditAddress]=useState()
 
-  // useEffect(()=>{console.log(authUser)},[authUser])
+
+
+useEffect(()=>{
+
+  getAddress()
+  console.log('first')
+},[])
+
+const addAddress=(input)=>{
+  axios.post('/auth/addaddress',input).then((res)=>{
+
+    console.log(res.data.addAddress)
+    setAddress(res.data.addAddress)
+    setEditAddress(res.data.addAddress)
+  }).catch((error)=>(console.log(error)))
+}
+
+const addressEdit=(input)=>{
+  axios.patch('auth/editaddress',input).then((res)=>
+    {console.log(res.data.newAddress)
+    setAddress(res.data.newAddress)
+    setEditAddress(res.data.newAddress)
+  }
+  ).catch(error=>{console.log(error)})
+}
+
+
+  const getAddress = () => {
+    axios
+      .get("/auth/getaddress")
+      .then((res) => {
+       
+        setAddress(res.data.address);
+        setEditAddress(res.data.address)
+      })
+      .catch((error) => console.log(error));
+  };
 
   useEffect(() => {
     if (getAccessToken()) {
@@ -44,20 +83,28 @@ export default function AuthContextProvider({ children }) {
     const res = await axios.post("/auth/register", input);
     setAuthUser(res.data.user);
     addAccessToken(res.data.accessToken);
-    setLoading(true)
+    setLoading(true);
     if (getAccessToken()) {
       window.location.href = "/";
     }
-    setLoading(false)
+    setLoading(false);
   };
 
   const login = async (input) => {
     const res = await axios.post("/auth/login", input);
     setAuthUser(res.data.user);
     addAccessToken(res.data.accessToken);
-
+    if(res.data.user.role){
+      window.location.href = "/admin";
+    }
     if (getAccessToken()) {
-      window.location.href = "/";
+      if(res.data.user.role){
+       window.location.href = "/admin";
+      } else{
+        window.location.href = "/"
+
+      }
+      
     }
   };
 
@@ -80,6 +127,13 @@ export default function AuthContextProvider({ children }) {
         setLoading,
         haveAccessToken,
         setHaveAccessToken,
+        getAddress,
+        address,
+        setAddress,
+        editAddress,
+        setEditAddress,
+        addressEdit,
+        addAddress
       }}
     >
       {children}

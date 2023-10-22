@@ -51,7 +51,17 @@ export default function NavHeader() {
               </Link>
             </>
           )}
+
+          
           {authUser && (
+           authUser && authUser.role ?
+           <>
+           <Link to={`/my-account/${authUser.id}`}>
+             <HeaderButton>Admin {authUser.username}</HeaderButton>
+           </Link>
+           <HeaderButton onClick={logoutAccount}>Log Out</HeaderButton>
+           </>
+           :
             <>
             <Link to={`/my-account/${authUser.id}`}>
               <HeaderButton>My Account {authUser.username}</HeaderButton>
@@ -59,9 +69,12 @@ export default function NavHeader() {
             <HeaderButton onClick={logoutAccount}>Log Out</HeaderButton>
             </>
           )}
-          <Link to={`/shopping-cart/${authUser?.id}`}>
+          {
+            authUser?.role?"":
+            <Link to={`/shopping-cart/${authUser?.id}`}>
           <HeaderButton>Shopping Cart</HeaderButton>
           </Link>
+          }
         </div>
       </div>
     </div>

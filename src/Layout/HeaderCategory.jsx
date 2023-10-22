@@ -1,7 +1,14 @@
 import { Link } from "react-router-dom";
 import ListCategory from "../features/header/headercategory/ListCategory";
+import { useAuth } from "../context/AuthContext";
 
 export default function HeaderCategory() {
+  const{authUser} =useAuth()
+
+  if(authUser?.role){
+    return ""
+  }
+
   return (
     <>
       <div className="bg-[#806D66] flex items-center justify-center">

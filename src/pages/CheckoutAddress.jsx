@@ -7,35 +7,38 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import{ useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 export default function CheckoutAddress() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   // const {itemCart}= useCart()
   const [itemCart, setItemCart] = useState();
-  const {orderId, setOrderId} = useCart();
+  const { orderId, setOrderId } = useCart();
   const [addCart, setAddCart] = useState();
   const { accountId } = useParams();
   const [netPrice, setNetPrice] = useState();
   const [address, setAddress] = useState();
-  
-  useEffect(() => {
-    axios.get("/auth/getaddress").then((res) => {
-      console.log(res.data.address);
-      setAddress(res.data.address);
-      axios
-        .get(`/cart/getcart?accountId=${accountId}`)
-        .then((res) => {
-          console.log(res.data.checkCart);
-          setItemCart(res.data.checkCart);
-          
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    });
-  }, []); 
 
+  useEffect(() => {
+    axios
+      .get("/auth/getaddress")
+      .then((res) => {
+        console.log(res.data.address);
+        setAddress(res.data.address);
+      })
+      .catch((error) => console.log(error));
+      axios
+      .get(`/cart/getcart?accountId=${accountId}`)
+      .then((res) => {
+        console.log(res.data.checkCart);
+        setItemCart(res.data.checkCart);
+        
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+  }, []);
 
   useEffect(() => {
     if (itemCart) {
@@ -52,36 +55,27 @@ export default function CheckoutAddress() {
     axios
       .post("/payment/order")
       .then((res) => {
-        setOrderId(res.data.orders.id)
-        
+        setOrderId(res.data.orders.id);
       })
       .catch((error) => console.log(error));
     axios
       .delete("/cart/deleteallcart")
-      .then((res) => {console.log(res)
-  
+      .then((res) => {
+        console.log(res);
+
         // navigate(`/payment/${accountId}/${orderId}`)
       })
       .catch((error) => {
         console.log(error);
       });
-
-
-      
   };
 
-  useEffect(()=>{
-    if(orderId){
-      navigate(`/payment/${accountId}/${orderId}`)
-      setOrderId()
+  useEffect(() => {
+    if (orderId) {
+      navigate(`/payment/${accountId}/${orderId}`);
+      setOrderId();
     }
-
-  },[orderId])
-
-  
-
-  
-
+  }, [orderId]);
 
   return (
     <BodyPage>
@@ -117,17 +111,14 @@ export default function CheckoutAddress() {
               <div>{netPrice && Number(netPrice).toLocaleString("us")}</div>
             </div>
             <div className="flex justify-end mt-10">
-              
-              
-                <button
-                  className="bg-pp-login-button w-[200px] text-white font-bold rounded-lg h-[70px]"
-                  onClick={(event) => {
-                    payment(event);
-                  }}
-                >
-                  Payment
-                </button>
-             
+              <button
+                className="bg-pp-login-button w-[200px] text-white font-bold rounded-lg h-[70px]"
+                onClick={(event) => {
+                  payment(event);
+                }}
+              >
+                Payment
+              </button>
             </div>
           </div>
         </div>
