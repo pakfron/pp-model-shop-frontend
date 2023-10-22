@@ -9,19 +9,17 @@ export const OrderContext = createContext();
 export default function OrderContextProvider({ children }) {
   const [order, setOrder] = useState();
 
-  useEffect(()=>{
-
-      axios.get("/payment/orderhistory").then((res) => {
-          setOrder(res.data.order);
-         
-        }).then((error)=>{})
-    }
-    ,
-    []
-  );
+  const getOrder = () => {
+    axios
+      .get("/payment/orderhistory")
+      .then((res) => {
+        setOrder(res.data.order);
+      })
+      .then((error) => {});
+  };
 
   return (
-    <OrderContext.Provider value={{ order, setOrder }}>
+    <OrderContext.Provider value={{ order, setOrder,getOrder }}>
       {children}
     </OrderContext.Provider>
   );
@@ -29,8 +27,5 @@ export default function OrderContextProvider({ children }) {
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const useOrder = () => {
-    return (
-      useContext(OrderContext)
-    )
-  }
-  
+  return useContext(OrderContext);
+};

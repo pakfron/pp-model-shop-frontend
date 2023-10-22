@@ -59,14 +59,24 @@ export default function CheckoutAddress() {
     axios
       .delete("/cart/deleteallcart")
       .then((res) => {console.log(res)
+  
         // navigate(`/payment/${accountId}/${orderId}`)
       })
       .catch((error) => {
         console.log(error);
       });
-      navigate(`/payment/${accountId}/${orderId}`)
+
+
       
   };
+
+  useEffect(()=>{
+    if(orderId){
+      navigate(`/payment/${accountId}/${orderId}`)
+      setOrderId()
+    }
+
+  },[orderId])
 
   
 

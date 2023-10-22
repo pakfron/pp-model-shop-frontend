@@ -1,11 +1,16 @@
+import { useEffect } from "react";
 import { useOrder } from "../context/OrderContext";
 import MyAccountBody from "../features/My Account/MyAccountBody";
 import BodyPage from "../features/body/BodyPage";
 import dayjs from "dayjs";
 export default function OrderHistoryPage() {
-  const { order, setOrder } = useOrder();
-  console.log(order);
-  console.log();
+  const { order,getOrder } = useOrder();
+
+  useEffect(()=>{
+    getOrder()
+
+  },[])
+
   return (
     <BodyPage>
       <MyAccountBody title={"Order History"}>
