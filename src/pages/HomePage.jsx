@@ -10,7 +10,7 @@ export default function HomePage() {
   const { authUser } = useAuth();
   return (
     <BodyPage>
-      {authUser && authUser?.role ? (
+      {authUser && authUser?.role==="admin" ? (
         <>
           <MyAccountBody title={"Admin"}>
             <div className=" pl-10 pb-40">

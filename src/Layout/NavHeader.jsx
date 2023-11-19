@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 
 export default function NavHeader() {
   const { authUser,setAuthUser,setLoading,loading } = useAuth();
-
+console.log(authUser)
  
 
  const logoutAccount =()=>{
@@ -54,7 +54,7 @@ export default function NavHeader() {
 
           
           {authUser && (
-           authUser && authUser.role ?
+           authUser && authUser.role==='admin' ?
            <>
            <Link to={`/my-account/${authUser.id}`}>
              <HeaderButton>Admin {authUser.username}</HeaderButton>
@@ -70,7 +70,7 @@ export default function NavHeader() {
             </>
           )}
           {
-            authUser?.role?"":
+            authUser?.role==="admin"?"":
             <Link to={`/shopping-cart/${authUser?.id}`}>
           <HeaderButton>Shopping Cart</HeaderButton>
           </Link>

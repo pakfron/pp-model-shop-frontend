@@ -5,7 +5,7 @@ import { useAuth } from "../context/AuthContext";
 export default function HeaderCategory() {
   const{authUser} =useAuth()
 
-  if(authUser?.role){
+  if(authUser?.role==="admin"){
     return ""
   }
 

@@ -7,7 +7,6 @@ import { Navigate } from "react-router-dom";
 export const AuthContext = createContext();
 
 export default function AuthContextProvider({ children }) {
-  
   const [authUser, setAuthUser] = useState(null);
   const [accessToken, setAccessToken] = useState();
   const [haveAccessToken, setHaveAccessToken] = useState(
@@ -23,42 +22,42 @@ export default function AuthContextProvider({ children }) {
   const [errorRegister, setErrorRegister] = useState();
   const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState();
-  const [editAddress,setEditAddress]=useState()
+  const [editAddress, setEditAddress] = useState();
 
+  useEffect(() => {
+    getAddress();
+  }, []);
 
+  const addAddress = (input) => {
+    axios
+      .post("/auth/addaddress", input)
+      .then((res) => {
+        console.log(res.data.addAddress);
+        setAddress(res.data.addAddress);
+        setEditAddress(res.data.addAddress);
+      })
+      .catch((error) => console.log(error));
+  };
 
-useEffect(()=>{
-
-  getAddress()
-  console.log('first')
-},[])
-
-const addAddress=(input)=>{
-  axios.post('/auth/addaddress',input).then((res)=>{
-
-    console.log(res.data.addAddress)
-    setAddress(res.data.addAddress)
-    setEditAddress(res.data.addAddress)
-  }).catch((error)=>(console.log(error)))
-}
-
-const addressEdit=(input)=>{
-  axios.patch('auth/editaddress',input).then((res)=>
-    {console.log(res.data.newAddress)
-    setAddress(res.data.newAddress)
-    setEditAddress(res.data.newAddress)
-  }
-  ).catch(error=>{console.log(error)})
-}
-
+  const addressEdit = (input) => {
+    axios
+      .patch("auth/editaddress", input)
+      .then((res) => {
+        console.log(res.data.newAddress);
+        setAddress(res.data.newAddress);
+        setEditAddress(res.data.newAddress);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const getAddress = () => {
     axios
       .get("/auth/getaddress")
       .then((res) => {
-       
         setAddress(res.data.address);
-        setEditAddress(res.data.address)
+        setEditAddress(res.data.address);
       })
       .catch((error) => console.log(error));
   };
@@ -92,16 +91,19 @@ const addressEdit=(input)=>{
   };
 
   const login = async (input) => {
-    const res = await axios.post("/auth/login", input);
-    setAuthUser(res.data.user);
-    addAccessToken(res.data.accessToken);
-   
-    if (getAccessToken()) {
-      
-      window.location.href= "/"
+
+    try {
+      const res = await axios.post("/auth/login", input);
+      setAuthUser(res.data.user);
+      addAccessToken(res.data.accessToken);
+  
+      if (getAccessToken()) {
+        window.location.href = "/";
       }
       
-    
+    } catch (error) {
+      throw error
+    }
   };
 
   return (
@@ -129,7 +131,7 @@ const addressEdit=(input)=>{
         editAddress,
         setEditAddress,
         addressEdit,
-        addAddress
+        addAddress,
       }}
     >
       {children}

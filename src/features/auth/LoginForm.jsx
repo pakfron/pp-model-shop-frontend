@@ -63,17 +63,17 @@ export default function LoginForm() {
     }
     
     setError({})
-    setLoading(true)
+    setLoading(false)
     login(input).then((res)=>{
-    
+      
     }).catch((error) => {
       setError(error.response.data);
-    
+      setLoading(true)
+      
     });
-    setLoading(false)
   };
-  console.log(loading)
-
+  console.log(error)
+  
   if(!loading==="true"){
     return <Loading/>
   }

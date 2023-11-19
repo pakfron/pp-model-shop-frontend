@@ -3,7 +3,13 @@ import { useProduct } from "../../context/ProductContext";
 import { useEffect } from "react";
 import { useState } from "react";
 import axios from "../../config/axios";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 export default function ListProductByType({Type}) {
+  const navigate=useNavigate()
+  const {authUser}=useAuth()
   const [addCart, setAddCart] = useState();
     const {products}=useProduct()
     useEffect(() => {
@@ -12,20 +18,33 @@ export default function ListProductByType({Type}) {
           .post("/cart/addcart", addCart)
           .then((res) => {
             
-            console.log(res.data);
+            console.log(res.data.product);
+            toast(`${res.data?.product?.name||res.data.pushCart.product.name} Add to Cart`, {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+              });
           })
           .catch((error) => {
-            console.log(error);
+            console.log(error); 
+            if(!authUser)
+            navigate('/login')
           })
           .finally(() => {
             setAddCart();
           });
        
       }
-    }, [addCart, setAddCart]);
+    }, [addCart]);
   
 
-const productByType = products?.filter((item)=>item.Type===Type)
+const productByType = products?.filter((item)=>item.Type===Type&&item.status===true)
+
     return (
         productByType &&
         productByType.map((el) => {
@@ -58,6 +77,7 @@ const productByType = products?.filter((item)=>item.Type===Type)
                     console.log(error);
                   }
                 }}>Add to Cart</button>
+                <ToastContainer/>
                 </div>
               </div>
           </div>

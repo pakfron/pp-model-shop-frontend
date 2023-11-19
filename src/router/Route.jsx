@@ -22,7 +22,9 @@ import AdminPage from "../pages/admin/AdminPage";
 import OrderHistoryAdminPage from "../pages/admin/OrderHistoryAdminPage";
 import ProductAdminPage from "../pages/admin/ProductAdminPage";
 import AddProduct from "../pages/admin/AddProduct";
-
+import AuthenticatedAdmin from "../features/auth/AuthenticatedAdmin";
+import AuthenticatedUser from "../features/auth/AuthenticatedUser";
+import EditProductPage from "../pages/admin/EditProductPage";
 
 const router = createBrowserRouter([
   { path: "/loading", element: <Loading /> },
@@ -56,13 +58,28 @@ const router = createBrowserRouter([
       },
       {
         path: "/my-account/:accountId",
-        element: <MyAccountPage />,
+        element: (
+          <AuthenticatedUser>
+            <MyAccountPage />
+          </AuthenticatedUser>
+        ),
       },
       {
         path: "/my-account/:accountId/profile",
-        element: <ProfilePage />,
+        element: (
+          <AuthenticatedUser>
+            <ProfilePage />
+          </AuthenticatedUser>
+        ),
       },
-      { path: "/my-account/:accountId/address", element: <AddressPage /> },
+      {
+        path: "/my-account/:accountId/address",
+        element: (
+          <AuthenticatedUser>
+            <AddressPage />
+          </AuthenticatedUser>
+        ),
+      },
       {
         path: "/product/:type/:productId",
         element: <ProductDetailPage />,
@@ -71,32 +88,75 @@ const router = createBrowserRouter([
         path: "/shopping-cart/:accountId",
         element: (
           <UnAuthenticated>
-            <ShoppingCart />
+            <AuthenticatedUser>
+              <ShoppingCart />
+            </AuthenticatedUser>
           </UnAuthenticated>
         ),
       },
       {
         path: "/shopping-cart/:accountId/checkout-address",
-        element: <CheckoutAddress />,
+        element: (
+          <AuthenticatedUser>
+            <CheckoutAddress />
+          </AuthenticatedUser>
+        ),
       },
       {
         path: "/payment/:accountId/:orderId",
-        element: <PaymentPage />,
+        element: (
+          <AuthenticatedUser>
+            <PaymentPage />
+          </AuthenticatedUser>
+        ),
       },
       {
-        path:'/orderhistory/:accountId',element:<OrderHistoryPage/>
-      }
-      ,{
-        path:'/admin',element:<AdminPage/>
+        path: "/orderhistory/:accountId",
+        element: (
+          <AuthenticatedUser>
+            <OrderHistoryPage />
+          </AuthenticatedUser>
+        ),
       },
       {
-        path:'/admin/orderhistory',element:<OrderHistoryAdminPage/>
+        path: "/admin",
+        element: (
+          <AuthenticatedAdmin>
+            <AdminPage />
+          </AuthenticatedAdmin>
+        ),
       },
-      {path:'/admin/product',element:<ProductAdminPage/>},
-      {path:'/admin/product/add',element:<AddProduct/>}
+      {
+        path: "/admin/orderhistory",
+        element: (
+          <AuthenticatedAdmin>
+            <OrderHistoryAdminPage />
+          </AuthenticatedAdmin>
+        ),
+      },
+      {
+        path: "/admin/product",
+        element: (
+          <AuthenticatedAdmin>
+            <ProductAdminPage />
+          </AuthenticatedAdmin>
+        ),
+      },
+      {
+        path: "/admin/product/add",
+        element: (
+          <AuthenticatedAdmin>
+            <AddProduct />
+          </AuthenticatedAdmin>
+        ),
+      },
+     { path:'/admin/product/:productId/edit',element:(
+      <AuthenticatedAdmin>
+      <EditProductPage/>
+      </AuthenticatedAdmin>
+     )}
     ],
   },
-  
 ]);
 
 export default function Route() {

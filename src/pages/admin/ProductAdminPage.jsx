@@ -1,11 +1,18 @@
+import { useEffect } from "react";
 import { useProduct } from "../../context/ProductContext";
 import MyAccountBody from "../../features/My Account/MyAccountBody";
 import BodyPage from "../../features/body/BodyPage";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 export default function ProductAdminPage() {
   const { products } = useProduct();
-  const {deleteProduct} = useProduct()
-  console.log(products);
+  const {deleteProduct,getProduct} = useProduct()
+  const navigate=useNavigate()
+ useEffect(()=>{
+  getProduct()
+
+ },[])
+ console.log(products)
   return (
     
       <BodyPage>
@@ -46,14 +53,17 @@ export default function ProductAdminPage() {
                             {Number(el?.price).toLocaleString("US")}
                           </div>
                         </div>
-                        <div className="flex w-[150px] justify-between">
-                          <div className="w-[50px] flex justify-center">
+                        <div className="flex w-[150px] justify-between cursor-pointer">
+                          <div className="w-[50px] flex justify-center" onClick={(event)=>{
+                            
+                            navigate(`/admin/product/${el.id}/edit`)
+                          }}>
                             Edit
                           </div>
                           <div onClick={(event)=>{
                             deleteProduct(event,el.id)
-                          }} className=" hover:text-red-600 hover:cursor-pointer w-[80px] flex justify-center">
-                            Remove
+                          }} className={`${el.status===false?'text-red-600 hover:text-green-500': 'text-green-500 hover:text-red-600'}  hover:cursor-pointer w-[80px] flex justify-center`}>
+                            {el?.status===false?"Off":"On"}
                           </div>
                         </div>
                       </div>
@@ -62,6 +72,7 @@ export default function ProductAdminPage() {
                 ))}
             </div>
           </div>
+          
         </MyAccountBody>
       </BodyPage>
     

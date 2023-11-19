@@ -28,6 +28,7 @@ export default function ListCart() {
       axios
         .get(`/cart/getcart?accountId=${accountId}`)
         .then((res) => {
+          console.log(res.data)
           setItemCart(res.data.checkCart);
           
         })
@@ -63,7 +64,7 @@ export default function ListCart() {
   }, [productId, setProductId]);
 
 
-  return itemCart?.map((el) => (
+  return  itemCart?.map((el) => (
     <div
       key={el.id}
       className="flex font-bold justify-between items-center pt-10"
@@ -71,7 +72,7 @@ export default function ListCart() {
       <div>
         <div className="flex gap-5 items-center">
           <div className="w-[150px]">
-            <img src={`${el?.imageproduct[0]?.imageUrl}`} />
+            <img src={`${el?.product.imageproduct[0]?.imageUrl}`} />
           </div>
           <div className="h-[184.93px] flex flex-col justify-between">
             <div className="h-[50%] flex items-center">{el?.product.name}</div>

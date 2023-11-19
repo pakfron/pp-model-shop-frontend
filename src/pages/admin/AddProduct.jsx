@@ -1,8 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import { useProduct } from "../../context/ProductContext";
 import MyAccountBody from "../../features/My Account/MyAccountBody";
 import BodyPage from "../../features/body/BodyPage";
 
 export default function AddProduct() {
+  const navigate = useNavigate()
   const {
     summitAddProduct,
     addImageOnChange,
@@ -12,13 +14,14 @@ export default function AddProduct() {
     setFile,
     addProductOnChange,
   } = useProduct();
-console.log(addProduct)
+  
   return (
     <BodyPage>
       <MyAccountBody title={"Add Product"}>
         <form
           onSubmit={(event) => {
-            summitAddProduct(event, addProduct,file);
+            event.preventDefault()
+          summitAddProduct(event, addProduct, file);
           }}
         >
           <div>
@@ -28,6 +31,7 @@ console.log(addProduct)
                 value={addProduct.name}
                 onChange={(event) => {
                   addProductOnChange(event);
+                 
                 }}
                 placeholder="Name"
                 name="name"
@@ -97,11 +101,25 @@ console.log(addProduct)
           >
             <div>Price : </div>
             <div>
-              <input value={addProduct.price} name="price" onChange={(event)=>{addProductOnChange(event)}} className="bg-[#F8F5F1]" />
+              <input
+                value={addProduct.price}
+                name="price"
+                onChange={(event) => {
+                  addProductOnChange(event);
+                }}
+                className="bg-[#F8F5F1]"
+              />
             </div>
           </div>
           <div>
-            <button className="bg-pp-login-button rounded-lg text-white h-[50px] w-[200px]">
+            
+            <button type="button" onClick={(event)=>{
+              event.preventDefault()
+              history.back()
+            }} className="bg-pp-login-button rounded-lg text-white h-[50px] w-[200px]">
+              Back
+            </button>
+            <button type="submit" className="bg-pp-login-button rounded-lg text-white h-[50px] w-[200px]">
               Add Product
             </button>
           </div>
