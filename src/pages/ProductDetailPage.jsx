@@ -1,12 +1,18 @@
 import { useParams } from "react-router-dom";
 import { useProduct } from "../context/ProductContext";
 import BodyPage from "../features/body/BodyPage";
+import { useCart } from "../context/CartContext";
+import { useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function ProductDetailPage() {
+  const navigate = useNavigate()
+const {authUser} = useAuth()
 const{products} =useProduct()
 const {type,productId} = useParams()
-console.log( )
-
+const {onChangeQuantity,quantity,setQuantity,addToCartQuantity}= useCart()
+useEffect(()=>{setQuantity(1)},[])
 
 
 const product = products?.filter(item=>item.id== +productId)
@@ -51,13 +57,26 @@ const product = products?.filter(item=>item.id== +productId)
             <div className=" font-bold w-[200px]">Price</div>
             <div className="w-[600px]">
               <span>{product[0].price} บาท</span>
+              
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-center pl-8 pr-8 pt-5 ">
+          <div className=" w-[800px] flex justify-center items-start gap-14">
+            <div className=" font-bold w-[200px]">Quantity</div>
+            <div className="w-[600px]">
+             
               <div className="flex gap-8">
-                <div>Quantity</div>
+                
                 <div>
                   <input
+                    value={quantity}
                     type="number"
-                    min={"0"}
-                    max={product[0].stock }
+                    min={"1"}
+                    onChange={(event)=>{
+                      onChangeQuantity(event)
+                    }}
+                    name="quantity"
                     className="border rounded-md bg-[#F0EBE5] w-[100px] text-center"
                   />
                 </div>
@@ -73,7 +92,16 @@ const product = products?.filter(item=>item.id== +productId)
                 
                 <div className="flex gap-8">
                   <div>
-                    <button className="bg-pp-login-button h-[65px] w-[180px] text-white rounded-lg">Add to Cart</button>     
+                    <button onClick={ async(event)=>{
+                      try {
+                        event.preventDefault()
+                        const data = await addToCartQuantity(Number(productId),quantity)
+                          
+                         navigate(`/shopping-cart/${authUser.id}`)
+                      } catch (error) {
+                        console.log(error)
+                      }
+                    }} className="bg-pp-login-button h-[65px] w-[180px] text-white rounded-lg">Add to Cart</button>     
                     </div>
                 </div>
               </div>

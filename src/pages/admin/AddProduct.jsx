@@ -2,9 +2,13 @@ import { useNavigate } from "react-router-dom";
 import { useProduct } from "../../context/ProductContext";
 import MyAccountBody from "../../features/My Account/MyAccountBody";
 import BodyPage from "../../features/body/BodyPage";
+import { useEffect } from "react";
+import { useState } from "react";
+import Loading from "../../components/Loading";
 
 export default function AddProduct() {
   const navigate = useNavigate()
+  const [loading,setLoading]=useState(false)
   const {
     summitAddProduct,
     addImageOnChange,
@@ -13,15 +17,45 @@ export default function AddProduct() {
     file,
     setFile,
     addProductOnChange,
+    editImage,
+    setEditEmage
   } = useProduct();
   
+
+  useEffect(()=>{
+
+    setAddProduct({
+      name: "",
+      series: "",
+      detail: "",
+      price: "",
+      Type: "Nendoroid",
+    })
+    setEditEmage()
+  },[])
+
+  const handleSubmitAddProduct = async (event)=>{
+    try {
+      event.preventDefault()
+      setLoading(!loading)
+      const data = await summitAddProduct(event, addProduct, file);
+      console.log(data)
+      setLoading(false)
+      navigate('/admin/product')
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+    }
+  }
+  if(loading){
+    return <Loading/>
+  }
   return (
     <BodyPage>
       <MyAccountBody title={"Add Product"}>
         <form
-          onSubmit={(event) => {
-            event.preventDefault()
-          summitAddProduct(event, addProduct, file);
+          onSubmit={ (event) => {
+            handleSubmitAddProduct(event)
           }}
         >
           <div>
@@ -69,16 +103,18 @@ export default function AddProduct() {
             </div>
           </div>
           <div>
-            <div>Image</div>
-            <div>
-              <input
-                type="file"
-                onChange={(event) => {
-                  addImageOnChange(event);
-                }}
-              />
+              <div>Image</div>
+              <div className="w-[500px]">{ !editImage ?<div className="h-[616px]"><img  className="h-[616px] w-[500px] object-cover " src="https://preyash2047.github.io/assets/img/no-preview-available.png?h=824917b166935ea4772542bec6e8f636" alt="preview image"/></div>: <img src={`${editImage}`} alt="" />}</div>
+              <div>
+                <input
+                  type="file"
+                  onChange={(event) => {
+                    addImageOnChange(event);
+                    setEditEmage(URL.createObjectURL(event.target.files[0]))
+                  }}
+                />
+              </div>
             </div>
-          </div>
           <div className="flex">
             <div>Type:</div>
             <div>

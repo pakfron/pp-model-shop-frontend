@@ -5,11 +5,16 @@ import BodyPage from "../../features/body/BodyPage";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from '../../config/axios'
+import { useState } from "react";
+import Loading from "../../components/Loading";
 
 export default function EditProductPage() {
-    const navigate = useNavigate()
 
+    const navigate = useNavigate()
+    const [loading,setLoading]=useState(false)
     const {
+
+      submitEditProduct,
         getEditProduct,
       editProduct,
       addImageOnChange,
@@ -22,7 +27,7 @@ export default function EditProductPage() {
       setEditEmage
     } = useProduct();
     const {productId}= useParams()
-    console.log(+productId)
+    // console.log(+productId)
 
 
     useEffect(  ()=>  {
@@ -30,15 +35,31 @@ export default function EditProductPage() {
     },[])
 
     // const handlesubmitEdit
-
+    const handleSubmitEdit = async (event)=>{
+      event.preventDefault()
+      setLoading(!loading)
+    const res = await editProduct(event, addProduct, file,Number(productId));
+    console.log(res)
+    setLoading(false)
+    setAddProduct({
+      name: "",
+      series: "",
+      detail: "",
+      price: "",
+      Type: "",
+    })
+    navigate('/admin/product')
+    }
+    if(loading){
+      return <Loading/>
+    }
 
     return (
       <BodyPage>
-        <MyAccountBody title={"Add Product"}>
+        <MyAccountBody title={"Edit Product"}>
           <form
-            onSubmit={(event) => {
-              event.preventDefault()
-            editProduct(event, addProduct, file);
+            onSubmit={ async (event) => {
+              handleSubmitEdit(event)
             }}
           >
             <div>
@@ -146,7 +167,7 @@ export default function EditProductPage() {
                 Back
               </button>
               <button type="submit" className="bg-pp-login-button rounded-lg text-white h-[50px] w-[200px]">
-                Add Product
+                Edit Product
               </button>
             </div>
           </form>

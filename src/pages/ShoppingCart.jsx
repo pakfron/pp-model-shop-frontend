@@ -7,11 +7,15 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function ShoppingCart() {
-
-  const { itemCart, netPrice, setNetPrice } = useCart();
+  const navigate = useNavigate()
+  const { itemCart, netPrice, setNetPrice,checkCart } = useCart();
   const { accountId } = useParams();
+  
   useEffect(() => {
 
     if (itemCart) {
@@ -72,14 +76,33 @@ export default function ShoppingCart() {
                 </Link>
               </div>
               <div>
-                <Link to={`/shopping-cart/${accountId}/checkout-address`}>
-                  <button className="bg-pp-login-button rounded-lg text-white font-bold h-[70px] w-[180px]">
+                
+                  <button onClick={(event)=>{
+                    event.preventDefault()
+                    if(Number(itemCart)!==0){
+                      navigate(`/shopping-cart/${accountId}/checkout-address`)
+                    }else {
+                      toast(`Cart is Empty`, {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "dark",
+                        });
+                    
+                    }
+
+                  }} className="bg-pp-login-button rounded-lg text-white font-bold h-[70px] w-[180px]">
                     CHECKOUT
                   </button>
-                </Link>
+                
               </div>
             </div>
           </div>
+          <ToastContainer/>
         </MyAccountBody>
       </BodyPage>
     );

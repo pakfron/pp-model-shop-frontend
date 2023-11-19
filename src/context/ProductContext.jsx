@@ -3,9 +3,11 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { createContext } from "react";
 import axios from "../config/axios";
+
 export const ProductContext = createContext();
 
 export default function ProdctContextProvider({ children }) {
+
   const [products, setProduct] = useState();
   const [addProduct, setAddProduct] = useState({
     name: "",
@@ -39,8 +41,9 @@ export default function ProdctContextProvider({ children }) {
     }
   };
 
-  const summitAddProduct = (event, input, file) => {
-    event.preventDefault();
+  const summitAddProduct = async (event, input, file) => {
+    try {
+      event.preventDefault();
     const data = new FormData();
     data.append("image", file);
     data.append("name", input.name);
@@ -48,21 +51,32 @@ export default function ProdctContextProvider({ children }) {
     data.append("detail", input.detail);
     data.append("price", input.price);
     data.append("Type", input.Type);
-    axios
-      .post("/product/create", data)
-      .then((res) => {
-        setAddProduct({
-          name: "",
-          series: "",
-          detail: "",
-          price: "",
-          Type: "",
-        });
-        return res.data.message;
-      })
-      .catch((error) => {
-        return error;
-      });
+    const res = await axios.post("/product/create", data)
+      return res.data
+      
+    } catch (error) {
+      console.log(error)
+    }
+    
+  };
+  const submitEditProduct = async (event, input, file) => {
+    try {
+      event.preventDefault();
+    const data = new FormData();
+    data.append("image", file);
+    data.append("name", input.name);
+    data.append("series", input.series);
+    data.append("detail", input.detail);
+    data.append("price", input.price);
+    data.append("Type", input.Type);
+    const res = await axios.post("/product/create", data)
+    console.log(res.data)
+    navigate('/admin/product')
+    } catch (error) {
+      console.log(error)
+    }
+    
+     
   };
 
   const getEditProduct = async (productId) => {
@@ -85,7 +99,7 @@ export default function ProdctContextProvider({ children }) {
     }
   };
 
-  const editProduct = async (event, input, file) => {
+  const editProduct = async (event, input, file,id) => {
     try {
       event.preventDefault();
       const data = new FormData();
@@ -95,16 +109,17 @@ export default function ProdctContextProvider({ children }) {
       data.append("detail", input.detail);
       data.append("price", input.price);
       data.append("Type", input.Type);
-      const edit = await axios.post("/updateproduct/:productId", data);
+      data.append('id',id)
+      const res = await axios.post("/product/updateproduct", data);
 
-      setAddProduct({
-        name: "",
-        series: "",
-        detail: "",
-        price: "",
-        Type: "",
-      });
-      console.log(res.data);
+      // setAddProduct({
+      //   name: "",
+      //   series: "",
+      //   detail: "",
+      //   price: "",
+      //   Type: "",
+      // });
+      return res.data
     } catch (error) {
       console.log(error);
     }
@@ -122,6 +137,15 @@ export default function ProdctContextProvider({ children }) {
         console.log(error);
       });
   };
+
+  const removeProduct = async(id)=>{
+    try {
+      const res = await axios.post('/product/removeproduct',{id:id})
+      return res
+    } catch (error) {
+      
+    }
+  }
 
   return (
     <ProductContext.Provider
@@ -141,6 +165,8 @@ export default function ProdctContextProvider({ children }) {
         getEditProduct,
         setEditEmage,
         editImage,
+        submitEditProduct,
+        removeProduct
       }}
     >
       {children}
