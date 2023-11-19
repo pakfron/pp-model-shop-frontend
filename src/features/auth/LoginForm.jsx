@@ -7,6 +7,7 @@ import Joi from "joi";
 import WarningErrorText from "./WarningErrorText";
 import { useEffect } from "react";
 import Loading from "../../components/Loading";
+import { Navigate } from "react-router-dom";
 
 export default function LoginForm() {
   const [input, setInput] = useState({
@@ -60,16 +61,20 @@ export default function LoginForm() {
     if (loginErr) {
    return  setError(loginErr);
     }
+    
     setError({})
     setLoading(true)
-    login(input).catch((error) => {
+    login(input).then((res)=>{
+    
+    }).catch((error) => {
       setError(error.response.data);
-      setLoading(true)
+    
     });
     setLoading(false)
   };
+  console.log(loading)
 
-  if(!loading){
+  if(!loading==="true"){
     return <Loading/>
   }
   

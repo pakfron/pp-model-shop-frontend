@@ -2,6 +2,7 @@ import { createContext, useContext, useState } from "react";
 import axios from "../config/axios";
 import { useEffect } from "react";
 import { addAccessToken, getAccessToken } from "../utilis/local-storage";
+import { Navigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
@@ -94,18 +95,13 @@ const addressEdit=(input)=>{
     const res = await axios.post("/auth/login", input);
     setAuthUser(res.data.user);
     addAccessToken(res.data.accessToken);
-    if(res.data.user.role){
-      window.location.href = "/admin";
-    }
+   
     if (getAccessToken()) {
-      if(res.data.user.role){
-       window.location.href = "/admin";
-      } else{
-        window.location.href = "/"
-
+      
+      window.location.href= "/"
       }
       
-    }
+    
   };
 
   return (

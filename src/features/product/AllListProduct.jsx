@@ -23,7 +23,7 @@ export default function AllListProduct() {
         });
      
     }
-  }, [addCart, setAddCart]);
+  }, [addCart]);
 
   return (
     products &&

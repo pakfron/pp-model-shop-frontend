@@ -8,7 +8,9 @@ export const OrderContext = createContext();
 
 export default function OrderContextProvider({ children }) {
   const [order, setOrder] = useState();
-
+  const [orderAdmin,setOrderAdmin]=useState()
+  const [addProduct,setAddProduct]=useState()
+  
   const getOrder = () => {
     axios
       .get("/payment/orderhistory")
@@ -18,8 +20,20 @@ export default function OrderContextProvider({ children }) {
       .then((error) => {});
   };
 
+const  getOrderAdmin =()=>{
+  axios.get('/payment/orderhistory/admin').then((res)=>{
+    setOrderAdmin(res.data.order)
+
+  }).catch((error)=>{
+    console.log(error)
+  })
+}
+
+
+
+
   return (
-    <OrderContext.Provider value={{ order, setOrder,getOrder }}>
+    <OrderContext.Provider value={{ setOrderAdmin,orderAdmin,getOrderAdmin,order, setOrder,getOrder }}>
       {children}
     </OrderContext.Provider>
   );

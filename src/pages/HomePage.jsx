@@ -20,8 +20,9 @@ export default function HomePage() {
                   <Link to="/admin/orderhistory">
                   <Li_ListAccountNav listText={"Order History"} />
                   </Link>
-
+                  <Link to="/admin/product">
                   <Li_ListAccountNav listText={"Product"} />
+                  </Link>
                 </ul>
               </div>
             </div>

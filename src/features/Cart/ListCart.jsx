@@ -71,7 +71,7 @@ export default function ListCart() {
       <div>
         <div className="flex gap-5 items-center">
           <div className="w-[150px]">
-            <img src={`${el?.product.imageproduct[0].imageUrl}`} />
+            <img src={`${el?.imageproduct[0]?.imageUrl}`} />
           </div>
           <div className="h-[184.93px] flex flex-col justify-between">
             <div className="h-[50%] flex items-center">{el?.product.name}</div>

@@ -38,7 +38,7 @@ export default function OrderHistoryPage() {
                           </Link>
                         )}
                       </div>
-                      <div>{order && order.dateTime?.slice(0, 10)}</div>
+                      <div>{order && order.dateTime? dayjs(order.dateTime).format('DD/MM/YYYY'):""}</div>
                     </div>
                   </div>
                   <div className="flex justify-between font-bold">

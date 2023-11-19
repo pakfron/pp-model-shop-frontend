@@ -21,6 +21,7 @@ import OrderHistoryPage from "../pages/OrderHistoryPage";
 import AdminPage from "../pages/admin/AdminPage";
 import OrderHistoryAdminPage from "../pages/admin/OrderHistoryAdminPage";
 import ProductAdminPage from "../pages/admin/ProductAdminPage";
+import AddProduct from "../pages/admin/AddProduct";
 
 
 const router = createBrowserRouter([
@@ -91,7 +92,8 @@ const router = createBrowserRouter([
       {
         path:'/admin/orderhistory',element:<OrderHistoryAdminPage/>
       },
-      {path:'/admin/product',element:<ProductAdminPage/>}
+      {path:'/admin/product',element:<ProductAdminPage/>},
+      {path:'/admin/product/add',element:<AddProduct/>}
     ],
   },
   
