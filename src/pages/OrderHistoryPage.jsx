@@ -5,9 +5,13 @@ import BodyPage from "../features/body/BodyPage";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 export default function OrderHistoryPage() {
+  const navigate = useNavigate()
+  
   const { order, getOrder } = useOrder();
   const {accountId}=useParams()
+  
 
   useEffect(() => {
     getOrder();
@@ -19,13 +23,15 @@ export default function OrderHistoryPage() {
         <div className="flex flex-col justify-center">
           {order &&
             order.map((order, index) => (
-              <>
+              
                 <div
-                  key={index}
+                  key={order.id}
                   className="h-auto rounded-lg py-5 px-5  bg-pp-bg-gray mr-10 ml-10 mb-10 flex flex-col gap-5"
                 >
                   <div className="flex justify-between">
-                    <div>Order Number: {order && order.id}</div>
+                    <div className="cursor-pointer" onClick={()=>{
+                      navigate(`/orderhistory/detail/${order.id}`)
+                    }}>Order Number: {order && order.id}</div>
                     <div>
                       <div>
                         {order && order?.slip ? (
@@ -46,7 +52,7 @@ export default function OrderHistoryPage() {
                     <div>{order && order.totalPrice} บาท</div>
                   </div>
                 </div>
-              </>
+              
             ))}
         </div>
       </MyAccountBody>

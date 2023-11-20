@@ -25,6 +25,9 @@ import AddProduct from "../pages/admin/AddProduct";
 import AuthenticatedAdmin from "../features/auth/AuthenticatedAdmin";
 import AuthenticatedUser from "../features/auth/AuthenticatedUser";
 import EditProductPage from "../pages/admin/EditProductPage";
+import OrderHistoryDetailPage from "../pages/myaccount/OrderHistoryDetailPage";
+import AuthenticatedIsAdmin from "../features/auth/AuthenticatedIsAdmin";
+import OrderHistoryDetailAdminPage from "../pages/admin/OrderHistoryDetailAdminPage";
 
 const router = createBrowserRouter([
   { path: "/loading", element: <Loading /> },
@@ -42,11 +45,29 @@ const router = createBrowserRouter([
           </Authenticated>
         ),
       },
-      { path: "/figure", element: <Figure /> },
-      { path: "/figma", element: <Figma /> },
+      {
+        path: "/figure",
+        element: (
+          <AuthenticatedIsAdmin>
+            <Figure />
+          </AuthenticatedIsAdmin>
+        ),
+      },
+      {
+        path: "/figma",
+        element: (
+          <AuthenticatedIsAdmin>
+            <Figma />
+          </AuthenticatedIsAdmin>
+        ),
+      },
       {
         path: "/nendoroid",
-        element: <Nendoroid />,
+        element: (
+          <AuthenticatedIsAdmin>
+            <Nendoroid />
+          </AuthenticatedIsAdmin>
+        ),
       },
       {
         path: "/register",
@@ -82,7 +103,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/product/:type/:productId",
-        element: <ProductDetailPage />,
+        element: (
+          <AuthenticatedIsAdmin>
+            <ProductDetailPage />
+          </AuthenticatedIsAdmin>
+        ),
       },
       {
         path: "/shopping-cart/:accountId",
@@ -119,6 +144,14 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "/orderhistory/detail/:orderId",
+        element: (
+          <AuthenticatedUser>
+            <OrderHistoryDetailPage />
+          </AuthenticatedUser>
+        ),
+      },
+      {
         path: "/admin",
         element: (
           <AuthenticatedAdmin>
@@ -150,11 +183,20 @@ const router = createBrowserRouter([
           </AuthenticatedAdmin>
         ),
       },
-     { path:'/admin/product/:productId/edit',element:(
-      <AuthenticatedAdmin>
-      <EditProductPage/>
-      </AuthenticatedAdmin>
-     )}
+      {
+        path: "/admin/product/:productId/edit",
+        element: (
+          <AuthenticatedAdmin>
+            <EditProductPage />
+          </AuthenticatedAdmin>
+        ),
+      },{
+        path:"/admin/product/detail/:orderId",
+        element:(<AuthenticatedAdmin>
+          <OrderHistoryDetailAdminPage/>
+        </AuthenticatedAdmin>)
+      }
+      
     ],
   },
 ]);

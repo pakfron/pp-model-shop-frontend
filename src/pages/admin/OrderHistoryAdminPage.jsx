@@ -4,9 +4,10 @@ import BodyPage from "../../features/body/BodyPage";
 import { useOrder } from "../../context/OrderContext";
 import dayjs from "dayjs";
 import axios from "../../config/axios";
+import { useNavigate } from "react-router-dom";
 export default function OrderHistoryAdminPage() {
   const { getOrderAdmin, setOrderAdmin, orderAdmin } = useOrder();
-  
+  const navigate =useNavigate()
   useEffect(() => {
     getOrderAdmin();
   }, []);
@@ -36,7 +37,10 @@ event.preventDefault()
                 >
                   <div className="flex justify-between">
                     <div className="flex gap-5">
-                      <div>Order Number: {order && order.id}</div>
+                      <div onClick={(event)=>{
+                        event.preventDefault()
+                        navigate(`/admin/product/detail/${order.id}`)
+                      }}>Order Number: {order && order.id}</div>
                       <div>
                         {order && order?.slip ? (
                           <>
