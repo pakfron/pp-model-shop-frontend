@@ -7,11 +7,12 @@ import { useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-
+import axios from "../../config/axios";
 export default function OrderHistoryDetailAdminPage() {
-  const navigate = useNavigate()
-  const { getOrderByIdAdmin, setIsOrderId, isOrderId } = useOrder();
-  const {authUser} = useAuth()
+  const navigate = useNavigate();
+  const { getOrderByIdAdmin, setIsOrderId, isOrderId, getOrderAdmin } =
+    useOrder();
+  const { authUser } = useAuth();
   const { orderId } = useParams();
 
   const fetchOrderByid = async () => {
@@ -23,25 +24,63 @@ export default function OrderHistoryDetailAdminPage() {
   useEffect(() => {
     fetchOrderByid();
   }, []);
+
+  const changeStatusOrder = (event, orderId) => {
+    event.preventDefault();
+    axios
+      .patch("payment/orderhistoryy/admin/order/changestatus", { orderId })
+      .then((res) => {
+        console.log(res.data);
+        getOrderAdmin();
+        fetchOrderByid();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <BodyPage>
       <MyAccountBody title={"Order History Detail"}>
         <div className="w-full">
           <div className="w-100% bg-pp-bg-gray mx-10 py-6 rounded-lg ">
             <div className="flex justify-between text-2xl">
-              <div className="font-bold">
+              <div className="font-bold flex gap-5">
+                <div>
                 Order Number {isOrderId && isOrderId[0].id}
+                </div>
+                <div>
+                        {isOrderId && isOrderId[0]?.slip ? (
+                          <>
+                            <div>
+                              {
+                                <a className="text-red-600" href={isOrderId[0]?.slip} target="_blank">
+                                  Slip
+                                </a>
+                              }
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div className="text-red-600">
+                              ลูกค้ายังไม่อัพโหลด slip
+                            </div>
+                          </>
+                        )}
+                      </div>
               </div>
               <div className="font-bold">
                 {isOrderId && isOrderId[0].dateTime ? (
                   dayjs(isOrderId[0].dateTime).format("DD/MM/YYYY")
                 ) : (
                   <div
-                  onClick={(event)=>{
-                    event.preventDefault()
+                    onClick={(event) => {
+                      event.preventDefault();
+                    }}
+                    className="text-red-600 cursor-pointer"
+                  >
                     
-                  }}
-                  className="text-red-600 cursor-pointer">Upload Slip</div>
+                  </div>
                 )}
               </div>
             </div>
@@ -105,6 +144,31 @@ export default function OrderHistoryDetailAdminPage() {
                       </>
                     );
                   })}
+              </div>
+            </div>
+            <div className="flex gap-4">
+              <div>
+                <button
+                  onClick={(event) => {navigate(`/admin/orderhistory`)
+                  window.scrollTo({
+                    top: 0,
+                    behavior: "auto",
+                  });
+                }}
+                  className=" w-[150px] rounded-lg h-[50px] text-white bg-pp-login-button"
+                >
+                  Back
+                </button>
+              </div>
+              <div>
+                <button
+                  onClick={(event) => {
+                    changeStatusOrder(event, isOrderId[0].id);
+                  }}
+                  className=" w-[150px] rounded-lg h-[50px] text-white bg-pp-login-button"
+                >
+                  ChangeStatus
+                </button>
               </div>
             </div>
           </div>

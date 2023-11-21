@@ -37,7 +37,7 @@ event.preventDefault()
                 >
                   <div className="flex justify-between">
                     <div className="flex gap-5">
-                      <div onClick={(event)=>{
+                      <div className="cursor-pointer" onClick={(event)=>{
                         event.preventDefault()
                         navigate(`/admin/product/detail/${order.id}`)
                       }}>Order Number: {order && order.id}</div>
